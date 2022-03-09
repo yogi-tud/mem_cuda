@@ -91,10 +91,10 @@ int main() {
 
 
     addkernel<<<128,512>>>(d_input+i*ele_count_vector, d_output, ele_count_vector);
-    cub::DeviceReduce::Sum(d_temp_storage, temp_storage_bytes, d_output, d_sum, ele_count_vector);
+
 
     }
-
+        cub::DeviceReduce::Sum(d_temp_storage, temp_storage_bytes, d_output, d_sum, ele_count_vector);
 
     });
 
@@ -104,16 +104,16 @@ int main() {
 
 
             addkernel_linear<<<128,512>>>(d_input+i*ele_count_vector, d_output_lin, ele_count_vector,ele_threads);
-            cub::DeviceReduce::Sum(d_temp_storage, temp_storage_bytes, d_output_lin, d_sum_lin, ele_count_vector);
 
 
 
         }
 
 
+
+
+        cub::DeviceReduce::Sum(d_temp_storage, temp_storage_bytes, d_output_lin, d_sum_lin, ele_count_vector);
     });
-
-
 
     cout<<"add_strided;" <<vectorsize_MIB <<";"<<time<<";"<< ((datasize_MIB) / (time)) * (float)(1000.0/1024.0)<<endl;
     cout<<"add_linear;" <<vectorsize_MIB <<";"<<time_l<<";"<< ((datasize_MIB) / (time_l)) * (float)(1000.0/1024.0)<<endl;
